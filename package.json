@@ -1,0 +1,15 @@
+{
+  "name": "nhl-data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "download_games.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cheerio": "^0.18.0",
+    "request": "^2.48.0"
+  }
+}
