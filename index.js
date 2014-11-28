@@ -9,10 +9,10 @@ var parseGameLogs = require('./parseGameLogs');
 var seasonId = '20142015';
 var gameId = 'PL020316';
 
-//downloadGame(seasonId, gameId, function(err, res) {
-  // res => { filename: './games/20142015-PL020316.html', html: '...' }
-//});
+downloadGame(seasonId, gameId, function(err, savedFile) {
+  //var importedLogs = importGameLogs(savedFile);
 
-var importedLogs = importGameLogs('./games/20142015-PL020316.html');
+  //console.log(importedLogs);
 
-var parsedLogs = parseGameLogs(importedLogs);
+  //var parsedLogs = parseGameLogs(importedLogs);
+});
