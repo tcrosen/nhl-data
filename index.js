@@ -19,4 +19,10 @@ var importedLogs = importGameLogs('./games/20142015-PL020316.html');
 
 var parsedLogs = parseGameLogs(importedLogs);
 
+console.log('GOALS');
+console.log('----------------------------\n');
 console.log(_.filter(parsedLogs, { type: 'GOAL'}));
+
+console.log('SHOTS ON GOAL');
+console.log('----------------------------\n');
+console.log(_.filter(parsedLogs, { type: 'SHOT'}));

@@ -2,13 +2,6 @@
 
 var _ = require('lodash');
 
-// TODO: Proper object & require
-var Player = function(name, number, team) {
-  this.name = name;
-  this.number = number;
-  this.team = team || '';
-};
-
 var EVENT_TYPES = {
   PERIOD_START: 'PSTR',
   PERIOD_END: 'PEND',
@@ -25,12 +18,19 @@ var EVENT_TYPES = {
   GAME_END: 'GEND'
 };
 
+// Split a string and trim whitespace from results
+String.prototype.splitAndTrim = function(sep) {
+  return _.map(this.split(sep), function(s) {
+    return s.trim();
+  });
+};
+
 /**
 * Parse a period start/end event description into a time.
 * Eg. Period Start- Local time: 7:07 EDT ==> 7:07 EDT
 */
 function parsePeriodStartEnd(desc) {
-  return desc.split('Local time: ')[1];
+  return desc.splitAndTrim('Local time: ')[1];
 }
 
 
@@ -48,7 +48,7 @@ function parseGameTimes(times) {
 */
 function parsePlayer(playerStr, team) {
   // CBJ #42 ANISIMOV(3) ==> ['CBJ', '42', 'ANISIMOV']
-  var parts = playerStr.replace(/\(\d+\)|#/g, '').split(' ');
+  var parts = playerStr.replace(/\(\d+\)|#/g, '').splitAndTrim(' ');
 
   if (parts.length === 2) {
     // ['42', 'ANISIMOV']
@@ -69,13 +69,13 @@ function parsePlayer(playerStr, team) {
 
 // CBJ #42 ANISIMOV(3), Wrist, Off. Zone, 29 ft.
 function parseGoalShot(desc) {
-  var parts = desc.split(',');
+  var parts = desc.splitAndTrim(',');
 
   return {
     player: parsePlayer(parts[0]),
-    type: parts[1].trim(),
-    zone: parts[2].trim(),
-    distance: parts[3].trim()
+    type: parts[1],
+    zone: parts[2],
+    distance: parts[3]
   };
 }
 
@@ -87,22 +87,21 @@ function parseGoalShot(desc) {
 function parseGoal(desc) {
   // DET #14 NYQUIST(4), Wrist, Off. Zone, 20 ft.Assists: #40 ZETTERBERG(4); #4 KINDL(1)
   //   ==> ['DET #14 NYQUIST(4), Wrist, Off. Zone, 20 ft.', '#40 ZETTERBERG(4); #4 KINDL(1)']
-  var parts = desc.split(/Assists:|Assist:/);
+  var parts = desc.splitAndTrim(/Assists:|Assist:/);
   var shot = parseGoalShot(parts[0]);
   var goal = {
     shot: shot,
-    assists: _.map(parts[1].split(';'), function(p) {
-      return parsePlayer(p.trim(), shot.player.team);
+    assists: _.map(parts[1].splitAndTrim(';'), function(p) {
+      return parsePlayer(p, shot.player.team);
     })
   };
 
   return goal;
 }
 
-// Ex. WPG ONGOAL - #16 LADD, Wrist, Off. Zone, 58 ft.
+// SHOT_ON_GOAL:  WPG ONGOAL - #16 LADD, Wrist, Off. Zone, 58 ft.
 function parseShotOnGoal(desc) {
-  // ['WPG #16 LADD', 'Wrist', 'Off. Zone', '58 ft.']
-  var parts = desc.replace('ONGOAL - ', '').split(',');
+  var parts = desc.replace('ONGOAL - ', '').splitAndTrim(',');
 
   return {
     player: parsePlayer(parts[0]),
@@ -114,12 +113,12 @@ function parseShotOnGoal(desc) {
 
 // SHOT_MISSED:   CBJ #42 ANISIMOV, Wrist, Over Net, Off. Zone, 29 ft.
 function parseShotMissed(desc) {
-  var parts = desc.split(',');
+  var parts = desc.splitAndTrim(',');
 
   return {
     player: parsePlayer(parts[0]),
     type: parts[1],
-    reason: parts[2],
+    miss: parts[2],
     zone: parts[3],
     distance: parts[4]
   };
@@ -127,14 +126,12 @@ function parseShotMissed(desc) {
 
 // SHOT_BLOCKED:  CBJ #38 JENNER BLOCKED BY  WPG #8 TROUBA, Wrist, Def. Zone
 function parseShotBlocked(desc) {
-  var parts = desc.split(',');
+  var parts = desc.replace('BLOCKED BY', '').splitAndTrim(',');
 
   return {
     player: parsePlayer(parts[0]),
     type: parts[1],
-    reason: parts[2],
-    zone: parts[3],
-    distance: parts[4]
+    zone: parts[2]
   };
 }
 
@@ -166,15 +163,15 @@ function parseLog(importLog, i) {
       break;
     }
     case EVENT_TYPES.SHOT_ON_GOAL: {
-      //log.shot = parseShotOnGoal(importLog.eventDescription);
+      log.shot = parseShotOnGoal(importLog.eventDescription);
       break;
     }
     case EVENT_TYPES.SHOT_MISSED: {
-      //log.shot = parseShotMissed(importLog.eventDescription);
+      log.shot = parseShotMissed(importLog.eventDescription);
       break;
     }
     case EVENT_TYPES.SHOT_BLOCKED: {
-      //log.shot = parseShotBlocked(importLog.eventDescription);
+      log.shot = parseShotBlocked(importLog.eventDescription);
       break;
     }
     case EVENT_TYPES.PERIOD_START: {
