@@ -1,8 +1,8 @@
 
-
+var _ = require('lodash');
 
 var downloadGame = require('./download_game');
-var readGameLogs = require('./read_game_logs');
+var importGameLogs = require('./import_game_logs');
 var parseGameLogs = require('./parse_game_logs');
 
 
@@ -13,6 +13,10 @@ var gameId = 'PL020316';
   // res => { filename: './games/20142015-PL020316.html', html: '...' }
 //});
 
-var gameLogs = readGameLogs('./games/20142015-PL020316.html');
+var importedLogs = importGameLogs('./games/20142015-PL020316.html');
 
-console.log(gameLogs);
+//console.log(_.filter(importedLogs, { eventType: 'GOAL'}));
+
+var parsedLogs = parseGameLogs(importedLogs);
+
+console.log(_.filter(parsedLogs, { type: 'GOAL'}));
