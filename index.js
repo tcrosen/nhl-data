@@ -1,9 +1,9 @@
 
 var _ = require('lodash');
 
-var downloadGame = require('./download_game');
-var importGameLogs = require('./import_game_logs');
-var parseGameLogs = require('./parse_game_logs');
+var downloadGame = require('./downloadGame');
+var importGameLogs = require('./extractGameLogs');
+var parseGameLogs = require('./parseGameLogs');
 
 
 var seasonId = '20142015';
@@ -15,14 +15,4 @@ var gameId = 'PL020316';
 
 var importedLogs = importGameLogs('./games/20142015-PL020316.html');
 
-//console.log(_.filter(importedLogs, { eventType: 'GOAL'}));
-
 var parsedLogs = parseGameLogs(importedLogs);
-
-console.log('GOALS');
-console.log('----------------------------\n');
-console.log(_.filter(parsedLogs, { type: 'GOAL'}));
-
-console.log('SHOTS ON GOAL');
-console.log('----------------------------\n');
-console.log(_.filter(parsedLogs, { type: 'SHOT'}));
