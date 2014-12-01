@@ -1,13 +1,14 @@
 
-
-var _ = require('lodash');
-
 // Split a string and trim whitespace from results
 String.prototype.splitAndTrim = function(sep) {
   return _.map(this.split(sep), function(s) {
     return s.trim();
   });
 };
+
+
+var _ = require('lodash');
+
 
 var parsers = require('./parsers');
 

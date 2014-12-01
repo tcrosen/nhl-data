@@ -1,6 +1,5 @@
 
 
-
 var request = require('request');
 var fs = require('fs');
 
@@ -28,7 +27,7 @@ function downloadAndSave(url, filename, done) {
 module.exports = function(seasonId, gameId, done) {
 
   var url = getGameReportUrl(seasonId, gameId);
-  var filename = './games/' + seasonId + '-' + gameId + '.html';
+  var filename = '../../data/game-reports/' + seasonId + '-' + gameId + '.html';
 
   if (fs.existsSync(filename)) {
     done(null, filename);

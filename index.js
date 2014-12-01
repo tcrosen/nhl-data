@@ -1,39 +1,72 @@
-
+/**
+* Import process
+*
+* 1. Download & save HTML
+* 2. Extract text from saved HTML
+* 3. Save raw text objects to DB
+* 4. Parse into defined schemas (business objects)
+* 5. Save BOs to DB
+* 6. Generate stats
+*
+*/
 
 // Libs
 var mongoose = require('mongoose');
 var _ = require('lodash');
 
 // Modules
-var downloadGame = require('./downloadGame');
-var importGameLogs = require('./extractGameLogs');
-var parseGameLogs = require('./parseGameLogs');
+var util = require('./util');
+var season = require('./components/season');
 
-// Models
-var GameImport = require('./models/game-import');
-
-
-mongoose.connect('mongodb://localhost/nhlData');
-
+// Locals
 var db = mongoose.connection;
-
 var seasonId = '20142015';
 var gameId = 'PL020316';
 
-downloadGame(seasonId, gameId, function(err, savedFile) {
+function onComplete() {
+  db.close();
+}
 
-  var importedLogs = importGameLogs(savedFile);
+mongoose.connect('mongodb://localhost/nhlData');
 
-  GameImport.create({
-    seasonId: seasonId,
-    gameId: gameId,
-    logs: importedLogs
-  }, function (err, gameImport) {
-    if (err) {
-      console.log(err);
-    }
+season.downloadSchedule(seasonId, function(err, scheduleFile) {
+  console.log('Season downloaded');
 
-    //var parsedLogs = parseGameLogs(importedLogs);
-    db.close();
+  var scheduleExtract = season.extractSchedule(scheduleFile);
+
+  season.importSchedule(seasonId, scheduleExtract, function(err, schedule) {
+    onComplete();
   });
 });
+
+//
+// downloadGame(seasonId, gameId, function(err, savedFile) {
+//
+//   var gameLogs = extractGameLogs(savedFile);
+//
+//   // 3. Save import
+//   GameImport.findOne({ seasonId: seasonId, gameId: gameId }, function(err, game) {
+//     if (game) {
+//       game.logs = gameLogs;
+//       game.save(function (err, gameImport) {
+//         if (err) {
+//           console.log(err);
+//         }
+//
+//         onComplete();
+//       });
+//     } else {
+//       GameImport.create({
+//         seasonId: seasonId,
+//         gameId: gameId,
+//         logs: gameLogs
+//       }, function (err, gameImport) {
+//         if (err) {
+//           console.log(err);
+//         }
+//
+//         onComplete();
+//       });
+//     }
+//   });
+// });
