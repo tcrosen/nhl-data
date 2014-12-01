@@ -17,11 +17,13 @@ var _ = require('lodash');
 // Modules
 var util = require('./util');
 var season = require('./components/season');
+var team = require('./components/team');
 
 // Locals
 var db = mongoose.connection;
 var seasonId = '20142015';
 var gameId = 'PL020316';
+
 
 function onComplete() {
   db.close();
@@ -29,12 +31,18 @@ function onComplete() {
 
 mongoose.connect('mongodb://localhost/nhlData');
 
-season.downloadSchedule(seasonId, function(err, scheduleFile) {
-  console.log('Season downloaded');
+// season.downloadSchedule(seasonId, function(err, scheduleFile) {
+//   var scheduleExtract = season.extractSchedule(scheduleFile);
+//   season.importSchedule(seasonId, scheduleExtract, function(err, schedule) {
+//     onComplete();
+//   });
+// });
 
-  var scheduleExtract = season.extractSchedule(scheduleFile);
+team.downloadAll(seasonId, function(err, file) {
+  var extract = team.extractAll(file);
 
-  season.importSchedule(seasonId, scheduleExtract, function(err, schedule) {
+  console.log('Teams extracted: ', extract);
+  team.importAll(extract, function(err) {
     onComplete();
   });
 });
