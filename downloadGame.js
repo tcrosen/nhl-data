@@ -30,13 +30,9 @@ module.exports = function(seasonId, gameId, done) {
   var url = getGameReportUrl(seasonId, gameId);
   var filename = './games/' + seasonId + '-' + gameId + '.html';
 
-  try {
-    // If the file doesn't exist an exception will be thrown
-    fs.statSync(filename);
-    done(null);
-    //downloadAndSave(url, filename, done);
-  } catch(e) {
-    console.log(e);
+  if (fs.existsSync(filename)) {
+    done(null, filename);
+  } else {
     console.log(filename + ' not found.  Downloading...');
     downloadAndSave(url, filename, done);
   }

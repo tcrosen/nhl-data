@@ -10,9 +10,9 @@ var seasonId = '20142015';
 var gameId = 'PL020316';
 
 downloadGame(seasonId, gameId, function(err, savedFile) {
-  //var importedLogs = importGameLogs(savedFile);
+  var importedLogs = importGameLogs(savedFile);
 
-  //console.log(importedLogs);
+  console.log(importedLogs);
 
   //var parsedLogs = parseGameLogs(importedLogs);
 });
