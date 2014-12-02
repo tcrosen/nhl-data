@@ -9,7 +9,8 @@ var save = require('./save');
 
 module.exports = function(seasonId, done) {
   download(seasonId, function(err, file) {
-    extract(file, function(err, extracted) {
+    extract(seasonId, function(err, extracted) {
+      console.log(extracted.length + ' players extracted from HTML');
       save(extracted, done);
     });
   });

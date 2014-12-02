@@ -33,24 +33,19 @@ var importSchedule = require('./importers/schedule');
 var importTeams = require('./importers/team');
 var importPlayers = require('./importers/player');
 
-importSchedule(seasonId, function(err) {
-  console.log('Schedule imported');
-
-  importTeams(seasonId, function(err) {
-    console.log('Teams imported');
-
-    importPlayers(seasonId, function(err) {
-      console.log('Players imported');
-
-      onComplete();
-    });
-  });
-});
-
-
-// var TeamImport = require('./models/team-import');
-//
-// TeamImport.find({}, function(err, teams) {
-//   console.log(teams);
-//   onComplete();
+// importSchedule(seasonId, function(err) {
+//   console.log('Schedule imported');
 // });
+
+// importTeams(seasonId, function(err) {
+//   console.log('Teams imported');
+// });
+
+// importPlayers(seasonId, function(err) {
+//   console.log('Players imported');
+// });
+
+
+var parsePlayerImport = require('./parsers/player-import');
+
+parsePlayerImport(onComplete);
