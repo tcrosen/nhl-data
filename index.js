@@ -17,8 +17,6 @@ var _ = require('lodash');
 // Modules
 var util = require('./util');
 
-
-
 // Locals
 var db = mongoose.connection;
 var seasonId = '20142015';
@@ -48,3 +46,11 @@ importSchedule(seasonId, function(err) {
     });
   });
 });
+
+
+// var TeamImport = require('./models/team-import');
+//
+// TeamImport.find({}, function(err, teams) {
+//   console.log(teams);
+//   onComplete();
+// });
