@@ -18,6 +18,7 @@ var _ = require('lodash');
 var util = require('./util');
 var season = require('./components/season');
 var team = require('./components/team');
+var player = require('./components/player');
 
 // Locals
 var db = mongoose.connection;
@@ -38,13 +39,23 @@ mongoose.connect('mongodb://localhost/nhlData');
 //   });
 // });
 
-team.downloadAll(seasonId, function(err, file) {
-  var extract = team.extractAll(file);
+// team.downloadAll(seasonId, function(err, file) {
+//   var extract = team.extractAll(file);
+//
+//   team.importAll(extract, function(err) {
+//     onComplete();
+//   });
+// });
 
-  console.log('Teams extracted: ', extract);
-  team.importAll(extract, function(err) {
+player.downloadAll(seasonId, function(err, file) {
+  player.extractAll(seasonId, function(err, extract) {
+    console.log(extract);
     onComplete();
   });
+
+  // player.importAll(extract, function(err) {
+  //   onComplete();
+  // });
 });
 
 //
