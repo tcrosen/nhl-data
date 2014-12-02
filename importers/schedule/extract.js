@@ -20,8 +20,10 @@ module.exports = function(file, done) {
   var selectors = {
     scheduledDate: '.skedStartDateSite',
     scheduledTime: '.skedStartTimeEST',
-    awayTeam: '.date+ .team .teamName a',
-    homeTeam: '.team+ .team .teamName a'
+    awayTeamName: '.date+ .team .teamName a',
+    homeTeamName: '.team+ .team .teamName a',
+    awayTeamKey: '.date+ .team .teamName a',
+    homeTeamKey: '.team+ .team .teamName a'
   };
 
   // create the initial array of objects
@@ -34,7 +36,11 @@ module.exports = function(file, done) {
   // Each property has a specific parser that handles data cleaning edge cases
   _.each(selectors, function(selector, key) {
     $(selector).each(function(i, el) {
-      results[i][key] = $(el).text().trim().replace(/(\n|\r)/g, '');
+      if (key === 'awayTeamKey' || key === 'homeTeamKey') {
+        results[i][key] = $(el).attr('rel');
+      } else {
+        results[i][key] = $(el).text().trim().replace(/(\n|\r)/g, '');
+      }
     });
   });
 

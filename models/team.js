@@ -7,4 +7,8 @@ var teamSchema = mongoose.Schema({
   keys: [String]
 });
 
+teamSchema.statics.findByKey = function(key, cb) {
+  return this.findOne({ keys: key }, cb);
+};
+
 module.exports = mongoose.model('Team', teamSchema);

@@ -5,8 +5,10 @@ var scheduleImportSchema = mongoose.Schema({
   games: [{
     scheduledDate: String,
     scheduledTime: String,
-    awayTeam: String,
-    homeTeam: String
+    awayTeamName: String,
+    homeTeamName: String,
+    awayTeamKey: String,
+    homeTeamKey: String
   }]
 });
 

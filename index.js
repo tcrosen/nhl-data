@@ -32,13 +32,15 @@ mongoose.connect('mongodb://localhost/nhlData');
 var importSchedule = require('./importers/schedule');
 var importTeams = require('./importers/team');
 var importPlayers = require('./importers/player');
-
+//
 // importSchedule(seasonId, function(err) {
 //   console.log('Schedule imported');
+//   onComplete();
 // });
 
 // importTeams(seasonId, function(err) {
 //   console.log('Teams imported');
+//   onComplete();
 // });
 
 // importPlayers(seasonId, function(err) {
@@ -47,5 +49,15 @@ var importPlayers = require('./importers/player');
 
 
 var parsePlayerImport = require('./parsers/player-import');
+var parseScheduleImport = require('./parsers/schedule-import');
+var parseTeamImport = require('./parsers/team-import');
 
-parsePlayerImport(onComplete);
+//parsePlayerImport(onComplete);
+
+// parseTeamImport(function(err) {
+//   onComplete();
+// });
+
+// parseScheduleImport(seasonId, function(err) {
+//   onComplete();
+// });
