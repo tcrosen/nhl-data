@@ -8,7 +8,7 @@ var cheerio = require('cheerio');
 /**
 *  Read a teams HTML file and extract raw text properties
 */
-module.exports = function(file) {
+module.exports = function(file, done) {
 
   var results = [];
 
@@ -41,5 +41,5 @@ module.exports = function(file) {
     });
   });
 
-  return results;
+  done(null, results);
 };

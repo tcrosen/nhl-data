@@ -31,9 +31,7 @@ module.exports = function(file) {
   // create the initial array of objects
   // the next loop will run through each selector and hydrate the array
   $(selectors.eventNumber).map(function(i, el) {
-    results[i] = {
-      eventNumber: $(el).text()
-    };
+    results[i] = {};
   });
 
   // Parse HTML to text and do some generic cleanup

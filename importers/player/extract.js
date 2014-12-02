@@ -8,7 +8,7 @@ var async = require('async');
 var glob = require('glob');
 
 /**
-*  Read a teams HTML file and extract raw text properties
+*  Read a directory of player HTML files and extract raw text properties
 */
 module.exports = function(seasonId, done) {
 
@@ -25,8 +25,8 @@ module.exports = function(seasonId, done) {
       var selectors = {
         name: '.playerSearch td:nth-child(1) a',
         team: '.playerSearch td:nth-child(2) a',
-        birthDate: '.playerSearch td:nth-child(3) a',
-        birthPlace: '.playerSearch td:nth-child(4) a'
+        birthDate: '.playerSearch td:nth-child(3)',
+        birthPlace: '.playerSearch td:nth-child(4)'
       };
 
       // create the initial array of objects
@@ -53,7 +53,7 @@ module.exports = function(seasonId, done) {
         done(err);
       }
 
-      done(null, results);
+      done(null, _.flatten(results));
     });
   });
 };

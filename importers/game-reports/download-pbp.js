@@ -2,27 +2,14 @@
 
 var request = require('request');
 var fs = require('fs');
+var util = require('../../util');
 
 function getGameReportUrl(seasonId, gameId) {
   return 'http://www.nhl.com/scores/htmlreports/' + seasonId + '/' + gameId + '.HTM';
 }
 
-function downloadAndSave(url, filename, done) {
-  request(url, function (err, response, html) {
-    if (response.statusCode !== 404) {
-      fs.writeFileSync(filename, html);
-    }
-
-    if (done) {
-      done(null, filename);
-    }
-  });
-}
-
 /**
-* Download game log HTML from the web and save to ./games directory
-* Will only download if file is not found or forceDownload is true
-*
+* Download game log HTML from the web
 */
 module.exports = function(seasonId, gameId, done) {
 
@@ -33,6 +20,6 @@ module.exports = function(seasonId, gameId, done) {
     done(null, filename);
   } else {
     console.log(filename + ' not found.  Downloading...');
-    downloadAndSave(url, filename, done);
+    util.downloadAndSaveHtml(url, filename, done);
   }
 };

@@ -16,9 +16,8 @@ var _ = require('lodash');
 
 // Modules
 var util = require('./util');
-var season = require('./components/season');
-var team = require('./components/team');
-var player = require('./components/player');
+
+
 
 // Locals
 var db = mongoose.connection;
@@ -32,60 +31,20 @@ function onComplete() {
 
 mongoose.connect('mongodb://localhost/nhlData');
 
-// season.downloadSchedule(seasonId, function(err, scheduleFile) {
-//   var scheduleExtract = season.extractSchedule(scheduleFile);
-//   season.importSchedule(seasonId, scheduleExtract, function(err, schedule) {
-//     onComplete();
-//   });
-// });
+var importSchedule = require('./importers/schedule');
+var importTeams = require('./importers/team');
+var importPlayers = require('./importers/player');
 
-// team.downloadAll(seasonId, function(err, file) {
-//   var extract = team.extractAll(file);
-//
-//   team.importAll(extract, function(err) {
-//     onComplete();
-//   });
-// });
+importSchedule(seasonId, function(err) {
+  console.log('Schedule imported');
 
-player.downloadAll(seasonId, function(err, file) {
-  player.extractAll(seasonId, function(err, extract) {
-    console.log(extract);
-    onComplete();
+  importTeams(seasonId, function(err) {
+    console.log('Teams imported');
+
+    importPlayers(seasonId, function(err) {
+      console.log('Players imported');
+
+      onComplete();
+    });
   });
-
-  // player.importAll(extract, function(err) {
-  //   onComplete();
-  // });
 });
-
-//
-// downloadGame(seasonId, gameId, function(err, savedFile) {
-//
-//   var gameLogs = extractGameLogs(savedFile);
-//
-//   // 3. Save import
-//   GameImport.findOne({ seasonId: seasonId, gameId: gameId }, function(err, game) {
-//     if (game) {
-//       game.logs = gameLogs;
-//       game.save(function (err, gameImport) {
-//         if (err) {
-//           console.log(err);
-//         }
-//
-//         onComplete();
-//       });
-//     } else {
-//       GameImport.create({
-//         seasonId: seasonId,
-//         gameId: gameId,
-//         logs: gameLogs
-//       }, function (err, gameImport) {
-//         if (err) {
-//           console.log(err);
-//         }
-//
-//         onComplete();
-//       });
-//     }
-//   });
-// });
