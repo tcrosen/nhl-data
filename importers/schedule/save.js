@@ -1,16 +1,4 @@
-var mongoose = require('mongoose');
-
-var scheduleImportSchema = mongoose.Schema({
-  seasonId: String,
-  games: [{
-    scheduledDate: String,
-    scheduledTime: String,
-    awayTeam: String,
-    homeTeam: String
-  }]
-});
-
-var ScheduleImport = mongoose.model('ScheduleImport', scheduleImportSchema);
+var ScheduleImport = require('../../models/schedule-import');
 
 module.exports = function(seasonId, scheduleExtract, done) {
   ScheduleImport.findOne({ seasonId: seasonId }, function(err, schedule) {

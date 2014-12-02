@@ -1,12 +1,5 @@
-var mongoose = require('mongoose');
 
-var teamImportSchema = mongoose.Schema({
-  city: String,
-  name: String,
-  logo: String
-});
-
-var TeamImport = mongoose.model('TeamImport', teamImportSchema);
+var TeamImport = require('../../models/team-import');
 
 module.exports = function(extract, done) {
   TeamImport.remove({}, function(err, teams) {
