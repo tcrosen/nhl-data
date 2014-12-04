@@ -13,16 +13,7 @@ program
   .version('0.0.1')
   .option('-s, --schedule', 'schedule')
   .option('-p, --pbp', 'pbp')
-  // .option('-P, --pineapple', 'Add pineapple')
-  // .option('-b, --bbq', 'Add bbq sauce')
-  // .option('-c, --cheese [type]', 'Add the specified type of cheese [marble]', 'marble')
   .parse(process.argv);
-
-// console.log('you ordered a pizza with:');
-// if (program.peppers) console.log('  - peppers');
-// if (program.pineapple) console.log('  - pineapple');
-// if (program.bbq) console.log('  - bbq');
-// console.log('  - %s cheese', program.cheese);
 
 // Locals
 var db = mongoose.connection;
@@ -32,18 +23,6 @@ function onComplete() {
 }
 
 mongoose.connect('mongodb://localhost/nhlData');
-
-/**
-* Import process
-*
-* 1. Download & save HTML
-* 2. Extract text from saved HTML
-* 3. Save raw text objects to DB
-* 4. Parse into defined schemas (business objects)
-* 5. Save BOs to DB
-* 6. Generate stats
-*
-*/
 
 var importSchedule = require('./importers/schedule');
 var importTeams = require('./importers/team');
@@ -64,6 +43,17 @@ if (program.schedule) {
   importPbp(seasonId, gameId, onComplete);
 } else {
   onComplete();
+
+
+  // importTeams(seasonId, function(err) {
+  //   console.log('Teams imported');
+  //   onComplete();
+  // });
+
+  // importPlayers(seasonId, function(err) {
+  //   console.log('Players imported');
+  // });
+
 }
 
 var EVENT_TYPES = {
@@ -81,28 +71,3 @@ var EVENT_TYPES = {
   HIT: 'HIT',
   GAME_END: 'GEND'
 };
-
-
-// importTeams(seasonId, function(err) {
-//   console.log('Teams imported');
-//   onComplete();
-// });
-
-// importPlayers(seasonId, function(err) {
-//   console.log('Players imported');
-// });
-
-
-var parsePlayerImport = require('./parsers/player-import');
-var parseScheduleImport = require('./parsers/schedule-import');
-var parseTeamImport = require('./parsers/team-import');
-
-//parsePlayerImport(onComplete);
-
-// parseTeamImport(function(err) {
-//   onComplete();
-// });
-
-// parseScheduleImport(seasonId, function(err) {
-//   onComplete();
-// });
