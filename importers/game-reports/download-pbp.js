@@ -14,7 +14,7 @@ function getGameReportUrl(seasonId, gameId) {
 module.exports = function(seasonId, gameId, done) {
 
   var url = getGameReportUrl(seasonId, gameId);
-  var filename = '../../data/game-reports/' + seasonId + '-' + gameId + '.html';
+  var filename = './data/' + seasonId + '/game-reports/' + seasonId + '-' + gameId + '.html';
 
   if (fs.existsSync(filename)) {
     done(null, filename);

@@ -8,7 +8,7 @@ var cheerio = require('cheerio');
 /**
  *  Read a game log HTML file and convert to raw text
  */
-module.exports = function(file) {
+module.exports = function(file, done) {
 
   var results = [];
 
@@ -42,5 +42,5 @@ module.exports = function(file) {
     });
   });
 
-  return results;
+  done(null, results);
 };

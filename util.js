@@ -3,6 +3,12 @@
 var request = require('request');
 var fs = require('fs');
 
+// Split a string and trim whitespace from results
+String.prototype.splitAndTrim = function(sep) {
+  return _.map(this.split(sep), function(s) {
+    return s.trim();
+  });
+};
 
 module.exports = {
   downloadAndSaveHtml: function(url, filename, done) {
