@@ -20,7 +20,7 @@ module.exports = function(file, done) {
   var selectors = {
     city: '.container .teamPlace',
     name: '.container .teamCommon',
-    logo: '.container .svg.team-logo'
+    logo: '.container .team-logo'
   };
 
   // create the initial array of objects

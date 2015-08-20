@@ -13,12 +13,13 @@ program
   .version('0.0.1')
   .option('-s, --schedule', 'schedule')
   .option('-p, --pbp', 'pbp')
+  .option('-t, --teams', 'teams')
   .parse(process.argv);
 
 // Locals
 var db = mongoose.connection;
 
-function onComplete() {
+function doneImport() {
   db.close();
 }
 
@@ -35,39 +36,25 @@ var gameId = 'PL020316';
 if (program.schedule) {
   importSchedule(seasonId, function(err) {
     console.log('Schedule imported');
-    onComplete();
+    doneImport();
   });
 } else if (program.pbp) {
   seasonId = program.args[0];
   gameId = program.args[1];
-  importPbp(seasonId, gameId, onComplete);
+  importPbp(seasonId, gameId, doneImport);
+}  else if (program.teams) {
+  importTeams(seasonId, function(err) {
+    console.log('Teams imported');
+    doneImport();
+  });
 } else {
-  onComplete();
+  doneImport();
 
 
-  // importTeams(seasonId, function(err) {
-  //   console.log('Teams imported');
-  //   onComplete();
-  // });
+
 
   // importPlayers(seasonId, function(err) {
   //   console.log('Players imported');
   // });
 
 }
-
-var EVENT_TYPES = {
-  PERIOD_START: 'PSTR',
-  PERIOD_END: 'PEND',
-  FACEOFF: 'FAC',
-  STOPPAGE: 'STOP',
-  GOAL: 'GOAL',
-  PENALTY: 'PENL',
-  TAKEAWAY: 'TAKE',
-  GIVEAWAY: 'GIVE',
-  SHOT_ON_GOAL: 'SHOT',
-  SHOT_MISSED: 'MISS',
-  SHOT_BLOCKED: 'BLOCK',
-  HIT: 'HIT',
-  GAME_END: 'GEND'
-};
