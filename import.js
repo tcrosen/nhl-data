@@ -12,14 +12,19 @@ var util = require('./util');
 program
   .version('0.0.1')
   .option('-s, --schedule', 'schedule')
-  .option('-p, --pbp', 'pbp')
   .option('-t, --teams', 'teams')
+  .option('-p, --players', 'players')
+  .option('-l, --logs', 'logs')
   .parse(process.argv);
 
 // Locals
 var db = mongoose.connection;
 
-function doneImport() {
+function doneImport(err) {
+  if (err) {
+    console.error('Error completing import', err);
+  }
+
   db.close();
 }
 
@@ -34,27 +39,15 @@ var seasonId = '20142015';
 var gameId = 'PL020316';
 
 if (program.schedule) {
-  importSchedule(seasonId, function(err) {
-    console.log('Schedule imported');
-    doneImport();
-  });
-} else if (program.pbp) {
+  importSchedule(seasonId, doneImport);
+} else if (program.logs) {
   seasonId = program.args[0];
   gameId = program.args[1];
   importPbp(seasonId, gameId, doneImport);
-}  else if (program.teams) {
-  importTeams(seasonId, function(err) {
-    console.log('Teams imported');
-    doneImport();
-  });
+} else if (program.teams) {
+  importTeams(seasonId, doneImport);
+} else if (program.players) {
+  importPlayers(seasonId, doneImport);
 } else {
   doneImport();
-
-
-
-
-  // importPlayers(seasonId, function(err) {
-  //   console.log('Players imported');
-  // });
-
 }

@@ -2,7 +2,7 @@
   "name": "nhl-data",
   "version": "1.0.0",
   "description": "",
-  "main": "download_games.js",
+  "main": "import.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -23,7 +23,7 @@ module.exports = function(seasonId, done) {
       // HTML selectors to extract data
       // Keys are used as properties
       var selectors = {
-        name: '.playerSearch td:nth-child(1) a',
+        nameAndPosition: '.playerSearch td:nth-child(1) a',
         team: '.playerSearch td:nth-child(2) a',
         birthDate: '.playerSearch td:nth-child(3)',
         birthPlace: '.playerSearch td:nth-child(4)'
@@ -31,7 +31,7 @@ module.exports = function(seasonId, done) {
 
       // create the initial array of objects
       // the next loop will run through each selector and hydrate the array
-      $(selectors.name).map(function(i, el) {
+      $(selectors.nameAndPosition).map(function(i, el) {
         pageResults[i] = {};
       });
 
