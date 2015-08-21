@@ -19,7 +19,8 @@ module.exports = function (seasonId, done) {
       if (fs.existsSync(filename)) {
         donePage();
       } else {
-        console.log(filename + ' not found.  Downloading...');
+        console.info(filename + ' not found.  Downloading...');
+
         util.downloadAndSaveHtml(url, filename, function (err) {
           if (err) {
             console.err('Error downloading/saving HTML file ' + filename + ' from URL ' + url, err);
@@ -27,6 +28,7 @@ module.exports = function (seasonId, done) {
           }
 
           console.info('Saved ' + filename + ' from URL ' + url);
+
           donePage(null, filename);
         });
       }

@@ -8,7 +8,19 @@ var playerImportSchema = mongoose.Schema({
     birthDate: String,
     birthPlace: String
   }],
-  createdAt: { type: Date, default: Date.now }
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
+
+// Get the latest import
+playerImportSchema.statics.getLatest = function(seasonId, cb) {
+  return this.findOne({
+    seasonId: seasonId
+  })
+  .sort('-createdAt')
+  .exec(cb);
+};
 
 module.exports = mongoose.model('PlayerImport', playerImportSchema);
