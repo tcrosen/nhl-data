@@ -8,7 +8,7 @@ var extract = require('./extract');
 var save = require('./save-import');
 
 module.exports = function(seasonId, done) {
-  download(seasonId, function(err, file) {
+  download(seasonId, function(err) {
     if (err) {
       console.error('Error downloading player data', err);
       done(err);
@@ -20,7 +20,7 @@ module.exports = function(seasonId, done) {
         done(err);
       }
 
-      console.info(extracted.length + ' players extracted from HTML');
+      console.info('[%s] players scraped from HTML files.', extracted.length);
 
       save(seasonId, extracted, function(err, res) {
         if (err) {
@@ -28,7 +28,7 @@ module.exports = function(seasonId, done) {
           done(err);
         }
 
-        console.info(res.players.length + ' players imported successfully!');
+        console.info('[%s] players imported from disk to DB.', res.players.length);
 
         done(null, res);
       });

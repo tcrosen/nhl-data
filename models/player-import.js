@@ -15,12 +15,12 @@ var playerImportSchema = mongoose.Schema({
 });
 
 // Get the latest import
-playerImportSchema.statics.getLatest = function(seasonId, cb) {
+playerImportSchema.statics.getLatestBySeason = function(seasonId, done) {
   return this.findOne({
     seasonId: seasonId
   })
   .sort('-createdAt')
-  .exec(cb);
+  .exec(done);
 };
 
 module.exports = mongoose.model('PlayerImport', playerImportSchema);

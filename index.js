@@ -35,6 +35,8 @@ var importTeams = require('./importers/team');
 var importPlayers = require('./importers/player');
 var importPbp = require('./importers/game-reports');
 
+var Player = require('./models/player');
+
 var seasonId = '20142015';
 var gameId = 'PL020316';
 
@@ -47,17 +49,14 @@ if (program.schedule) {
 } else if (program.teams) {
   importTeams(seasonId, done);
 } else if (program.players) {
-  importPlayers(seasonId, done);
-} else {
-  var playerImportMapper = require('./mappers/player-import');
-
-  playerImportMapper.getPlayersFromLatestImport(seasonId, function(err, latestImport) {
+  console.log('Importing players...');
+  importPlayers(seasonId, function(err) {
     if (err) {
-      console.error(err);
       done(err);
     }
 
-    console.log('Season: %s\nCreated: %s\nPlayers: %s', latestImport.seasonId, latestImport.createdAt, latestImport.players.length);
-    done();
+    Player.updateAllFromLatestImport(seasonId, done);
   });
+} else {
+  done();
 }

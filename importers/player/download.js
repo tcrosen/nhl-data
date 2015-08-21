@@ -17,17 +17,18 @@ module.exports = function (seasonId, done) {
       var filename = './data/' + seasonId + '/players/' + letter + '-' + page + '.html';
 
       if (fs.existsSync(filename)) {
+        // console.info('[%s] exists, skipping download.', filename);
         donePage();
       } else {
-        console.info(filename + ' not found.  Downloading...');
+        console.info('[%s] not found.  Downloading...', filename);
 
         util.downloadAndSaveHtml(url, filename, function (err) {
           if (err) {
-            console.err('Error downloading/saving HTML file ' + filename + ' from URL ' + url, err);
+            console.err('Error downloading/saving HTML file [%s] from [%s]', filename, url, err);
             donePage(err);
           }
 
-          console.info('Saved ' + filename + ' from URL ' + url);
+          console.info('Saved [%s] from [%s]', filename, url);
 
           donePage(null, filename);
         });
