@@ -11,10 +11,10 @@ var util = require('./util');
 
 program
   .version('0.0.1')
-  .option('-s, --schedule', 'schedule')
-  .option('-t, --teams', 'teams')
-  .option('-p, --players', 'players')
-  .option('-l, --logs', 'logs')
+  .option('-s, --schedule', 'Import schedule')
+  .option('-t, --teams', 'Import teams')
+  .option('-p, --players', 'Import players')
+  .option('-l, --logs', 'Import game logs')
   .parse(process.argv);
 
 // Locals
@@ -42,7 +42,7 @@ var seasonId = '20142015';
 var gameId = 'PL020316';
 
 if (program.schedule) {
-  console.info('Importing schedule...');  
+  console.info('Importing schedule...');
   // Download and scrape a full season's game into SeasonImport
   importSchedule(seasonId, done);
 } else if (program.logs) {
