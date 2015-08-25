@@ -1,12 +1,37 @@
-var downloadPbp = require('./download-pbp');
-var extractPbp = require('./extract-pbp');
-var savePbp = require('./save-pbp');
+var download = require('./download-game-logs');
+var extract = require('./extract-game-logs');
+var save = require('./save-import');
+var GameLogsImport = require('../../models/game-logs-import');
 
 module.exports = function(seasonId, gameId, done) {
-  downloadPbp(seasonId, gameId, function(err, file) {
-    extractPbp(file, function(err, extracted) {
-      console.log(extracted.length + ' logs extracted from HTML');
-      savePbp(seasonId, gameId, extracted, done);
+  download(seasonId, gameId, function(err, file) {
+    if (err) {
+      console.error('Error downloading game log data', err);
+      done(err);
+    }
+
+    extract(file, function(err, extracted) {
+      if (err) {
+        console.error('Error extracting game log data', err);
+        done(err);
+      }
+
+      console.info('[%s] logs scraped from HTML files.', extracted.length);
+
+      GameLogsImport.create({
+        gameId: gameId,
+        seasonId: seasonId,
+        logs: extracted
+      }, function(err, res) {
+        if (err) {
+          console.error('Error saving imported game log data', err);
+          done(err);
+        }
+
+        console.info('game with [%s] logs imported from disk to DB.', res.logs.length);
+
+        done(null, res);
+      });
     });
   });
 };

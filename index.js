@@ -34,12 +34,15 @@ mongoose.connect('mongodb://localhost/nhlData');
 var importSchedule = require('./importers/schedule');
 var importTeams = require('./importers/team');
 var importPlayers = require('./importers/player');
-var importPbp = require('./importers/game-reports');
+var importGameLogs = require('./importers/game-reports');
 var TEAMS = require('./const').TEAMS;
 var Player = require('./models/player');
 var Team = require('./models/team');
 var seasonId = '20142015';
 var gameId = 'PL020316';
+
+// seasonId = program.args[0];
+// gameId = program.args[1];
 
 if (program.schedule) {
   console.info('Importing schedule...');
@@ -47,9 +50,15 @@ if (program.schedule) {
   importSchedule(seasonId, done);
 } else if (program.logs) {
   console.info('Importing game logs...');
-  seasonId = program.args[0];
-  gameId = program.args[1];
-  importPbp(seasonId, gameId, done);
+  importGameLogs(seasonId, gameId, function(err, res) {
+    if (err) {
+      done(err);
+    }
+
+    done();
+    // Update GameLog collection from new GameLogImport collection
+    //GameLogs.updateAllFromImport(res, done);
+  });
 } else if (program.teams) {
   console.info('Importing players...');
   // Imports static teams to Team collection
