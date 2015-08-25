@@ -118,4 +118,8 @@ module.exports = [{
   city: 'Ottawa',
   name: 'Senators',
   keys: ['OTT']
+}, {
+  city: 'NHL',
+  name: 'NHL',
+  keys: ['NHL']
 }];

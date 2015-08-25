@@ -9,26 +9,26 @@ var Team = require('../models/team');
  * Convert a schedule import into games
  */
 
-module.exports = function (seasonId, done) {
+module.exports = function(seasonId, done) {
   ScheduleImport.findOne({
     seasonId: seasonId
-  }, function (err, scheduleImported) {
+  }, function(err, scheduleImported) {
     var home, away;
 
-    var games = async.map(scheduleImported.games, function (game, gameComplete) {
+    var games = async.map(scheduleImported.games, function(game, gameComplete) {
       async.series({
-          away: function (cb) {
-            Team.findByKey(game.awayTeamKey, function (err, t) {
+          away: function(cb) {
+            Team.findByKey(game.awayTeamKey, function(err, t) {
               cb(null, t._id);
             });
           },
-          home: function (cb) {
-            Team.findByKey(game.homeTeamKey, function (err, t) {
+          home: function(cb) {
+            Team.findByKey(game.homeTeamKey, function(err, t) {
               cb(null, t._id);
             });
           }
         },
-        function (err, teams) {
+        function(err, teams) {
           if (err) {
             done(err);
           }
@@ -41,12 +41,14 @@ module.exports = function (seasonId, done) {
             away: teams.away
           }));
         });
-    }, function (err, games) {
+    }, function(err, games) {
       if (err) {
         done(err);
       }
 
-      Game.remove({ seasonId: seasonId }, function(err) {
+      Game.remove({
+        seasonId: seasonId
+      }, function(err) {
         Game.create(games, done);
       });
     });
