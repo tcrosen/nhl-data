@@ -1,13 +1,24 @@
 #!/usr/bin/env node
 
 /**
-* Module dependencies.
-*/
+ * Module dependencies.
+ */
 
 var program = require('commander');
 var mongoose = require('mongoose');
 var _ = require('lodash');
 var util = require('./util');
+var config = require('./config/environment');
+
+var db = mongoose.connection;
+
+// Connect to database
+mongoose.connect(config.mongo.uri, config.mongo.options);
+
+db.on('error', function(err) {
+  console.error('MongoDB connection error: ' + err);
+  process.exit(-1);
+});
 
 program
   .version('0.0.1')
@@ -16,20 +27,6 @@ program
   .option('-p, --players', 'Import players')
   .option('-l, --logs', 'Import game logs')
   .parse(process.argv);
-
-// Locals
-var db = mongoose.connection;
-
-function done(err) {
-  if (err) {
-    console.error(err);
-  }
-
-  console.info('All done.');
-  db.close();
-}
-
-mongoose.connect('mongodb://localhost/nhlData');
 
 var importSchedule = require('./importers/schedule');
 var importTeams = require('./importers/team');
@@ -84,4 +81,13 @@ if (program.schedule) {
   });
 } else {
   done();
+}
+
+function done(err) {
+  if (err) {
+    console.error(err);
+  }
+
+  console.info('All done.');
+  db.close();
 }
