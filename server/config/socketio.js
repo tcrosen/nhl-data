@@ -18,6 +18,13 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/player-import/player-import.socket').register(socket);
+  require('../api/team-import/team-import.socket').register(socket);
+  require('../api/schedule-import/schedule-import.socket').register(socket);
+  require('../api/team/team.socket').register(socket);
+  require('../api/player/player.socket').register(socket);
+  require('../api/game-logs-import/game-logs-import.socket').register(socket);
+  require('../api/game/game.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);
 }
 

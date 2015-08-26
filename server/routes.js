@@ -10,6 +10,13 @@ var path = require('path');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/player-imports', require('./api/player-import'));
+  app.use('/api/team-imports', require('./api/team-import'));
+  app.use('/api/schedule-imports', require('./api/schedule-import'));
+  app.use('/api/teams', require('./api/team'));
+  app.use('/api/players', require('./api/player'));
+  app.use('/api/game-logs-imports', require('./api/game-logs-import'));
+  app.use('/api/games', require('./api/game'));
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
 

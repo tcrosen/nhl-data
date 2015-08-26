@@ -1,7 +1,9 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+'use strict';
 
-var gameSchema = Schema({
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
+
+var GameSchema = new Schema({
   seasonId: String,
   scheduledDate: String,
   scheduledTime: String,
@@ -9,4 +11,4 @@ var gameSchema = Schema({
   home: { type: Schema.ObjectId, ref: 'Team' }
 });
 
-module.exports = mongoose.model('Game', gameSchema);
+module.exports = mongoose.model('Game', GameSchema);
