@@ -1,5 +1,5 @@
 
-var PlayerImport = require('../../models/player-import');
+var PlayerImport = require('../../api/player-import');
 
 module.exports = function(seasonId, players, done) {
   PlayerImport.create({

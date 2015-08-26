@@ -1,7 +1,7 @@
 
 var _ = require('lodash');
-var TeamImport = require('../../models/team-import');
-var keyMaps = require('./keys');
+var TeamImport = require('../../api/team-import/team-import.model');
+var keyMaps = require('../../const').TEAMS;
 
 module.exports = function(seasonId, teamsRaw, done) {
   // Add acronym keys that are used later in parsing game logs

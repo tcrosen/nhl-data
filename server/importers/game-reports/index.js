@@ -1,7 +1,7 @@
 var download = require('./download-game-logs');
 var extract = require('./extract-game-logs');
 var save = require('./save-import');
-var GameLogsImport = require('../../models/game-logs-import');
+var GameLogsImport = require('../../api/game-logs-import/game-logs-import.model');
 
 module.exports = function(seasonId, gameId, done) {
   download(seasonId, gameId, function(err, file) {

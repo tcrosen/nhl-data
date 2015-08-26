@@ -1,4 +1,4 @@
-var ScheduleImport = require('../../models/schedule-import');
+var ScheduleImport = require('../../api/schedule-import/schedule-import.model');
 
 module.exports = function(seasonId, scheduleExtract, done) {
   ScheduleImport.findOne({ seasonId: seasonId }, function(err, schedule) {

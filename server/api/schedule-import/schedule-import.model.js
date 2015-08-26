@@ -4,9 +4,15 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var ScheduleImportSchema = new Schema({
-  name: String,
-  info: String,
-  active: Boolean
+  seasonId: String,
+  games: [{
+    scheduledDate: String,
+    scheduledTime: String,
+    awayTeamName: String,
+    homeTeamName: String,
+    awayTeamKey: String,
+    homeTeamKey: String
+  }]
 });
 
 module.exports = mongoose.model('ScheduleImport', ScheduleImportSchema);

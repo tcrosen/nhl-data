@@ -1,12 +1,20 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+  Schema = mongoose.Schema;
 
 var TeamImportSchema = new Schema({
-  name: String,
-  info: String,
-  active: Boolean
+  seasonId: String,
+  teams: [{
+    city: String,
+    name: String,
+    logo: String,
+    keys: [String]
+  }],
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model('TeamImport', TeamImportSchema);
