@@ -5,49 +5,49 @@ var TeamImport = require('./team-import.model');
 
 // Get list of team-imports
 exports.index = function(req, res) {
-  TeamImport.find(function (err, team-imports) {
+  TeamImport.find(function (err, teamImports) {
     if(err) { return handleError(res, err); }
-    return res.status(200).json(team-imports);
+    return res.status(200).json(teamImports);
   });
 };
 
-// Get a single team-import
+// Get a single teamImport
 exports.show = function(req, res) {
-  TeamImport.findById(req.params.id, function (err, team-import) {
+  TeamImport.findById(req.params.id, function (err, teamImport) {
     if(err) { return handleError(res, err); }
-    if(!team-import) { return res.status(404).send('Not Found'); }
-    return res.json(team-import);
+    if(!teamImport) { return res.status(404).send('Not Found'); }
+    return res.json(teamImport);
   });
 };
 
-// Creates a new team-import in the DB.
+// Creates a new teamImport in the DB.
 exports.create = function(req, res) {
-  TeamImport.create(req.body, function(err, team-import) {
+  TeamImport.create(req.body, function(err, teamImport) {
     if(err) { return handleError(res, err); }
-    return res.status(201).json(team-import);
+    return res.status(201).json(teamImport);
   });
 };
 
-// Updates an existing team-import in the DB.
+// Updates an existing teamImport in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  TeamImport.findById(req.params.id, function (err, team-import) {
+  TeamImport.findById(req.params.id, function (err, teamImport) {
     if (err) { return handleError(res, err); }
-    if(!team-import) { return res.status(404).send('Not Found'); }
-    var updated = _.merge(team-import, req.body);
+    if(!teamImport) { return res.status(404).send('Not Found'); }
+    var updated = _.merge(teamImport, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.status(200).json(team-import);
+      return res.status(200).json(teamImport);
     });
   });
 };
 
-// Deletes a team-import from the DB.
+// Deletes a teamImport from the DB.
 exports.destroy = function(req, res) {
-  TeamImport.findById(req.params.id, function (err, team-import) {
+  TeamImport.findById(req.params.id, function (err, teamImport) {
     if(err) { return handleError(res, err); }
-    if(!team-import) { return res.status(404).send('Not Found'); }
-    team-import.remove(function(err) {
+    if(!teamImport) { return res.status(404).send('Not Found'); }
+    teamImport.remove(function(err) {
       if(err) { return handleError(res, err); }
       return res.status(204).send('No Content');
     });
