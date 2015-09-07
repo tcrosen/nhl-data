@@ -14,6 +14,10 @@ var PlayerSchema = new Schema({
   positions: [String]
 });
 
+PlayerSchema.statics.findByName = function(name, cb) {
+  return this.find({ name: new RegExp(name, 'i') }, cb);
+};
+
 PlayerSchema.statics.import = function(player, cb) {
   var Player = this,
     positionStr = player.nameAndPosition.match(/\(.+\)/)[0],

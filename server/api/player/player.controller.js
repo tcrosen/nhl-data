@@ -54,6 +54,15 @@ exports.destroy = function(req, res) {
   });
 };
 
+exports.search = function(req, res) {
+  Player.findByName(req.params.name, function (err, players) {
+    if(err) { return handleError(res, err); }
+    if(!players) { return res.status(404).send('Not Found'); }
+    return res.json(players);
+  });
+};
+
+
 function handleError(res, err) {
   return res.status(500).send(err);
 }
